@@ -7,17 +7,17 @@ from drfapp.models import Student
 
 class TestView(APIView):
     def get(self, request, *args, **kwargs):
-        data = {
-            'username': 'admin'
-        }
+        queryset = Student.objects.all()
         
-        return Response(data)
+        serializer = StudentSerializer(queryset, many=True)
+        
+        return Response(serializer.data)
     
     def post(self, request, *args, **kwargs):
         serializer = StudentSerializer(data=request.data)
 
         if serializer.is_valid():
-            serializer.save
+            serializer.save()
             
             return Response(serializer.data)
         
